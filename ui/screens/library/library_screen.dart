@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:homework/song-with-firebase/data/repositories/artists/artist_repository.dart';
 import 'package:provider/provider.dart';
 import 'view_model/library_view_model.dart';
 import '../../../data/repositories/songs/song_repository.dart';
@@ -13,7 +14,8 @@ class LibraryScreen extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => LibraryViewModel(
         playerState: context.read<PlayerState>(),
-        songRepository: context.read<SongRepository>(),
+        songRepository: context.read<SongRepository>(), 
+        artistRepository: context.read<ArtistRepository>(),
       ),
       child: LibraryContent(),
     );

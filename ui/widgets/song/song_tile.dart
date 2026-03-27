@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-
-import '../../../model/songs/song.dart';
+import 'package:homework/song-with-firebase/data/dtos/song_with_artist_dto.dart';
 
 class SongTile extends StatelessWidget {
   const SongTile({
     super.key,
-    required this.song,
-    required this.isPlaying,
+    required this.songWithArtistDto,
+    required this.isPlaying, 
     required this.onTap,
   });
 
-  final Song song;
+  final SongWithArtistDto songWithArtistDto;
   final bool isPlaying;
   final VoidCallback onTap;
 
@@ -21,13 +20,18 @@ class SongTile extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(15)
+          borderRadius: BorderRadius.circular(15),
         ),
         child: ListTile(
-          leading: CircleAvatar(backgroundImage: NetworkImage(song.imageUrl.toString()),),
+          leading: CircleAvatar(
+            backgroundImage: NetworkImage(songWithArtistDto.song.imageUrl.toString()),
+          ),
           onTap: onTap,
-          title: Text(song.title),
-          subtitle: Text('${song.duration.inMinutes.toString()} Mins'),
+          title: Text(songWithArtistDto.song.title),
+          subtitle: Text(
+            '${songWithArtistDto.song.duration.inMinutes} mins  '
+            '${songWithArtistDto.artist.name} - ${songWithArtistDto.artist.genre}',
+          ),
           trailing: Text(
             isPlaying ? "Playing" : "",
             style: TextStyle(color: Colors.amber),

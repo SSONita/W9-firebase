@@ -29,5 +29,26 @@ class ArtistRepositoryFirebase extends ArtistRepository {
   }
 
   @override
-  Future<Artist?> fetchArtistById(String artistId) async{}
+  Future<Artist?> fetchArtistById(String artistId) async{
+    try {
+      final response = await http.get(artistUri);
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> artistJson = jsonDecode(response.body);
+
+        for (var entry in artistJson.entries) {
+          final artist = ArtistDto.fromJson(entry.key, entry.value);
+          if (artist.artistId == artistId) {
+            return artist;
+          }
+        }
+        return null; 
+      } else {
+        throw Exception('Failed to load artist');
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+  
 }

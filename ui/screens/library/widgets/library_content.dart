@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:homework/song-with-firebase/data/dtos/song_with_artist_dto.dart';
 import 'package:provider/provider.dart';
-import '../../../../model/songs/song.dart';
 import '../../../theme/theme.dart';
 import '../../../utils/async_value.dart';
 import '../../../widgets/song/song_tile.dart';
@@ -14,7 +14,7 @@ class LibraryContent extends StatelessWidget {
     // 1- Read the globbal song repository
     LibraryViewModel mv = context.watch<LibraryViewModel>();
 
-    AsyncValue<List<Song>> asyncValue = mv.songsValue;
+    AsyncValue<List<SongWithArtistDto>> asyncValue = mv.songsWithArtistValue;
 
     Widget content;
     switch (asyncValue.state) {
@@ -26,14 +26,14 @@ class LibraryContent extends StatelessWidget {
         content = Center(child: Text('error = ${asyncValue.error!}', style: TextStyle(color: Colors.red),));
 
       case AsyncValueState.success:
-        List<Song> songs = asyncValue.data!;
+        List<SongWithArtistDto> songWithArtists = asyncValue.data!;
         content = ListView.builder(
-          itemCount: songs.length,
+          itemCount: songWithArtists.length,
           itemBuilder: (context, index) => SongTile(
-            song: songs[index],
-            isPlaying: mv.isSongPlaying(songs[index]),
+            songWithArtistDto: songWithArtists[index],
+            isPlaying: mv.isSongPlaying(songWithArtists[index].song),
             onTap: () {
-              mv.start(songs[index]);
+              mv.start(songWithArtists[index].song);
             },
           ),
         );
